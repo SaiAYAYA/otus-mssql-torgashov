@@ -120,8 +120,8 @@ FROM [WideWorldImporters].[Sales].[InvoiceLines] t1
 JOIN [WideWorldImporters].[Warehouse].[StockItems] t2 on t1.StockItemID=t2.StockItemID
 JOIN [WideWorldImporters].[Sales].[Invoices] t3 on t1.InvoiceID=t3.InvoiceID
 GROUP BY t2.StockItemID,
-       	   t2.StockItemName,
-	       Year(t3.InvoiceDate),
-	       month(t3.InvoiceDate)
+       	  t2.StockItemName,
+	      year(t3.InvoiceDate),
+	      month(t3.InvoiceDate)
 ORDER BY [Год], [Месяц], t2.StockItemName
 
