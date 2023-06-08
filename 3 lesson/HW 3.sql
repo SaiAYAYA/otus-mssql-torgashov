@@ -38,7 +38,7 @@ FROM [Sales].[Invoices] as t1
 JOIN [Sales].[InvoiceLines] t2 on t1.InvoiceID=t2.InvoiceID
 WHERE year(t1.[InvoiceDate]) = 2015 and month(t1. [InvoiceDate]) = 4
 GROUP BY year(t1.[InvoiceDate]),
-		month(t1. [InvoiceDate])
+		 month(t1. [InvoiceDate])
 
 /*
 2. Отобразить все месяцы, где общая сумма продаж превысила 4 600 000
@@ -60,7 +60,7 @@ JOIN [Sales].[InvoiceLines] t2 on t1.InvoiceID=t2.InvoiceID
 GROUP BY year(t1.[InvoiceDate]),
 		month(t1. [InvoiceDate])
 HAVING SUM(t2.[ExtendedPrice]) > 4600000
-ORDER BY [Год],[Месяц]
+ORDER BY Год, Месяц
 
 /*
 3. Вывести сумму продаж, дату первой продажи
@@ -79,12 +79,12 @@ ORDER BY [Год],[Месяц]
 Продажи смотреть в таблице Sales.Invoices и связанных таблицах.
 */
 
-SELECT Year(t3.InvoiceDate) as [Год],
-	   month(t3.InvoiceDate) as [Месяц],
-	   t2.StockItemName as [Товар],
-	   min(t3.InvoiceDate) as [ПерваяПродажа],
-	   sum(t1.Quantity) as [КоличествоЗаМесяц],
-       sum(t1.[ExtendedPrice]) as [СуммаЗаМесяц]
+SELECT year(t3.InvoiceDate) as Год,
+	   month(t3.InvoiceDate) as Месяц,
+	   t2.StockItemName as Товар,
+	   min(t3.InvoiceDate) as ПерваяПродажа,
+	   sum(t1.Quantity) as КоличествоЗаМесяц,
+       sum(t1.[ExtendedPrice]) as СуммаЗаМесяц
 FROM [WideWorldImporters].[Sales].[InvoiceLines] t1
 JOIN [WideWorldImporters].[Warehouse].[StockItems] t2 on t1.StockItemID=t2.StockItemID
 JOIN [WideWorldImporters].[Sales].[Invoices] t3 on t1.InvoiceID=t3.InvoiceID
@@ -92,7 +92,7 @@ GROUP BY   Year(t3.InvoiceDate),
 	       month(t3.InvoiceDate),
 		   t2.StockItemName
 HAVING sum(t1.Quantity) < 50
-ORDER BY [Год], [Месяц], t2.StockItemName
+ORDER BY Год, Месяц, t2.StockItemName
 
 -- ---------------------------------------------------------------------------
 -- Опционально
@@ -101,9 +101,9 @@ ORDER BY [Год], [Месяц], t2.StockItemName
 /*Написать запросы 2-3 так, чтобы если в каком-то месяце не было продаж,
 то этот месяц также отображался бы в результатах, но там были нули.*/
 
-SELECT year(t3.InvoiceDate) as [Год],
-	   month(t3.InvoiceDate) as [Месяц],
-	   IIF(SUM(t1.[ExtendedPrice]) > 4600000, SUM(t1.[ExtendedPrice]), 0) as [СуммаЗаМесяц]
+SELECT year(t3.InvoiceDate) as Год,
+	   month(t3.InvoiceDate) as Месяц,
+	   IIF(SUM(t1.[ExtendedPrice]) > 4600000, SUM(t1.[ExtendedPrice]), 0) as СуммаЗаМесяц
 FROM [WideWorldImporters].[Sales].[InvoiceLines] t1
 JOIN [WideWorldImporters].[Sales].[Invoices] t3 on t1.InvoiceID=t3.InvoiceID
 GROUP BY Year(t3.InvoiceDate),
@@ -113,15 +113,15 @@ ORDER BY [Год],[Месяц]
 SELECT year(t3.InvoiceDate) as [Год],
 	   month(t3.InvoiceDate) as [Месяц],
 	   t2.StockItemName as   [Товар],
-	   IIF (sum(t1.Quantity) < 50, min(t3.InvoiceDate),null) as [Перваяпродажа],
-	   IIF(sum(t1.Quantity) < 50,sum(t1.Quantity),0) as [КоличествоЗаМесяц],
-       IIF (sum(t1.Quantity) < 50,sum(t1.[ExtendedPrice]),0) as [СуммаЗаМесяц]
+	   IIF (sum(t1.Quantity) < 50, min(t3.InvoiceDate),null) as Перваяпродажа,
+	   IIF(sum(t1.Quantity) < 50,sum(t1.Quantity),0) as КоличествоЗаМесяц,
+       IIF (sum(t1.Quantity) < 50,sum(t1.[ExtendedPrice]),0) as СуммаЗаМесяц
 FROM [WideWorldImporters].[Sales].[InvoiceLines] t1
 JOIN [WideWorldImporters].[Warehouse].[StockItems] t2 on t1.StockItemID=t2.StockItemID
 JOIN [WideWorldImporters].[Sales].[Invoices] t3 on t1.InvoiceID=t3.InvoiceID
 GROUP BY t2.StockItemID,
-       	  t2.StockItemName,
-	      year(t3.InvoiceDate),
-	      month(t3.InvoiceDate)
-ORDER BY [Год], [Месяц], t2.StockItemName
+       	 t2.StockItemName,
+	     year(t3.InvoiceDate),
+	     month(t3.InvoiceDate)
+ORDER BY Год, Месяц, t2.StockItemName
 
