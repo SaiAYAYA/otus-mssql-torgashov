@@ -83,7 +83,7 @@ FROM [Purchasing].[Suppliers]
 */
 
 DELETE [Purchasing].[Suppliers] 
-WHERE [SupplierID]=1
+WHERE [SupplierID]=15
 
 
 /*
@@ -91,8 +91,9 @@ WHERE [SupplierID]=1
 */
 
 UPDATE [Purchasing].[Suppliers]
-SET [SupplierName]='Test'
-WHERE [SupplierID]=1
+SET [SupplierName]='Test record',
+    [PostalAddressLine1]= 'PO Box 1015'
+WHERE [SupplierID]=16
 
 /*
 4. Написать MERGE, который вставит вставит запись в клиенты, если ее там нет, и изменит если она уже есть
