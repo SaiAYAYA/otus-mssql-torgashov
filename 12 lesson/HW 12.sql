@@ -1,4 +1,4 @@
----- Создание DB
+---- Г‘Г®Г§Г¤Г Г­ГЁГҐ DB
 
 CREATE DATABASE [NT]
  CONTAINMENT = NONE
@@ -9,7 +9,7 @@ CREATE DATABASE [NT]
  WITH CATALOG_COLLATION = DATABASE_DEFAULT
 GO
 
-USE [NT]
+USE [TertiarySales]
 GO
 
 CREATE TABLE [TertiarySales].[NT_Nomenclatures](
@@ -269,13 +269,13 @@ ADD  CONSTRAINT [FK_SalesZpf_TradePoints] FOREIGN KEY([FK_Store_NO])
 REFERENCES [TertiarySales].[NT_TradePoints] ([FK_Store_NO])
 
 
---------1-2 индекса на таблицы
+--------1-2 ГЁГ­Г¤ГҐГЄГ±Г  Г­Г  ГІГ ГЎГ«ГЁГ¶Г»
 CREATE NONCLUSTERED INDEX [Tp_Client_StoreAddress] 
  ON [TertiarySales].[NT_TradePoints]
 ([Client],[StoreAddress]);
 
 
----------Наложение ограничения на таблицы
+---------ГЌГ Г«Г®Г¦ГҐГ­ГЁГҐ Г®ГЈГ°Г Г­ГЁГ·ГҐГ­ГЁГї Г­Г  ГІГ ГЎГ«ГЁГ¶Г»
 ALTER TABLE [TertiarySales].[NT_TradePoints]
 ADD  CONSTRAINT [Uniq_FK_Store_NO] UNIQUE ([FK_Store_NO]);
 
