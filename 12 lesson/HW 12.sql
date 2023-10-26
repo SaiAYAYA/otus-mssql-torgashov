@@ -9,7 +9,10 @@ CREATE DATABASE [NT]
  WITH CATALOG_COLLATION = DATABASE_DEFAULT
 GO
 
-USE [TertiarySales]
+CREATE SCHEMA [TeartiarySales]
+GO
+	
+USE [NT]
 GO
 
 CREATE TABLE [TertiarySales].[NT_Nomenclatures](
