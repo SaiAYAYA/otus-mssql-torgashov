@@ -1,4 +1,4 @@
----- Ñîçäàíèå DB
+--Создать базу данных
 
 CREATE DATABASE [NT]
  CONTAINMENT = NONE
@@ -8,10 +8,10 @@ CREATE DATABASE [NT]
 ( NAME = N'NT_log', FILENAME = N'D:\Data\NT_log.ldf' , SIZE = 12001280KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
  WITH CATALOG_COLLATION = DATABASE_DEFAULT
 GO
-
+--Создать схему
 CREATE SCHEMA [TeartiarySales]
 GO
-	
+--3-4 основные таблицы для своего проекта.	
 USE [NT]
 GO
 
@@ -38,7 +38,8 @@ CREATE TABLE [TertiarySales].[NT_Nomenclatures](
 	[SKU_Unif] [nvarchar](300) NULL,
 	[ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
 	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
- CONSTRAINT [PK_Nom] PRIMARY KEY CLUSTERED 
+	PERIOD FOR SYSTEM_TIME (ValidFrom, ValidTo),
+ CONSTRAINT [PK_Nom] PRIMARY KEY ([FK_xcode])) 
 
 
 CREATE TABLE [TertiarySales].[NT_TradePoints](
@@ -55,7 +56,8 @@ CREATE TABLE [TertiarySales].[NT_TradePoints](
 	[Branch] [nvarchar](255) NULL,
 	[ValidFrom] [datetime2](7) GENERATED ALWAYS AS ROW START NOT NULL,
 	[ValidTo] [datetime2](7) GENERATED ALWAYS AS ROW END NOT NULL,
- CONSTRAINT [PK_TP] PRIMARY KEY CLUSTERED 
+	PERIOD FOR SYSTEM_TIME (ValidFrom, ValidTo),
+ CONSTRAINT [PK_TP] PRIMARY KEY ([FK_Store_NO]))
 
 
 CREATE TABLE [TertiarySales].[NT_Calendar](
@@ -72,7 +74,7 @@ CREATE TABLE [TertiarySales].[NT_Calendar](
 	[MonthDayNumber] [int] NULL,
 	[WeekDayNumber] [int] NULL,
 	[FirstDayOfMonth] [date] NULL,
- CONSTRAINT [PK_DateID] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_DateID] PRIMARY KEY ([DateID])) 
 
 
 CREATE TABLE [TertiarySales].[NT_Promo_Feed](
@@ -191,6 +193,7 @@ CREATE TABLE [TertiarySales].[NT_Sales_ZPF](
 	[Date] [date] NULL
 ) ON [PRIMARY]
 
+--Первичные и внешние ключи для всех созданных таблиц
 ALTER TABLE [TertiarySales].[NT_Promo_Feed]  
 ADD  CONSTRAINT [FK_PromoFeed_Nom] FOREIGN KEY([FK_xcode])
 REFERENCES [TertiarySales].[NT_Nomenclatures] ([FK_xcode])
@@ -272,13 +275,12 @@ ADD  CONSTRAINT [FK_SalesZpf_TradePoints] FOREIGN KEY([FK_Store_NO])
 REFERENCES [TertiarySales].[NT_TradePoints] ([FK_Store_NO])
 
 
---------1-2 èíäåêñà íà òàáëèöû
+ --1-2 индекса на таблицы
 CREATE NONCLUSTERED INDEX [Tp_Client_StoreAddress] 
  ON [TertiarySales].[NT_TradePoints]
 ([Client],[StoreAddress]);
 
-
----------Íàëîæåíèå îãðàíè÷åíèÿ íà òàáëèöû
+--Наложите по одному ограничению в каждой таблице на ввод данных.
 ALTER TABLE [TertiarySales].[NT_TradePoints]
 ADD  CONSTRAINT [Uniq_FK_Store_NO] UNIQUE ([FK_Store_NO]);
 
